@@ -1,10 +1,14 @@
 //jshint esversion:6
+require('dotenv').config(); //Has to be at the top. Used for environment variables.
 const express = require("express");
 const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const app = express();
 const encrypt = require("mongoose-encryption");
+
+const app = express();
+
+console.log(process.env.API_KEY);
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
@@ -26,9 +30,9 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-const secret = "Thisisourlittlesecret.";
+// const secret = "Thisisourlittlesecret.";
 userSchema.plugin(encrypt, {
-  secret: secret,
+  secret: process.env.SECRET,
   encryptedFields: ["password"]
 });
 //The mongoose encrypt functionality is passed as a plugin
